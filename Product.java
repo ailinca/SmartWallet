@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -6,7 +8,7 @@ public class Product {
 	String name;
 	float price;
 	Category category;
-	Date date;
+	String date;
 	boolean shoud_not_buy;
 	boolean tracked;
 	
@@ -15,7 +17,7 @@ public class Product {
 		this.name = new String();
 		this.price = 0;
 		this.category = null;
-		this.date = new Date();
+		this.date = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
 		this.shoud_not_buy = false;
 		this.tracked = false;
 	}
@@ -27,7 +29,7 @@ public class Product {
 		this.category = c;
 		this.shoud_not_buy = s;
 		this.tracked = t;
-		this.date = new Date();
+		this.date = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
 	}
 	
 	public String getName()
@@ -40,7 +42,7 @@ public class Product {
 		return this.price;
 	}
 	
-	public Date getDate()
+	public String getDate()
 	{
 		return this.date;
 	}

@@ -1,12 +1,16 @@
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
-// fa un backup dupa brain, si pune l undeva unde nu l stergi adica ce sa ii fac? sa ilpun pe git?
-//poti.
+
+import javax.swing.*;
+import javax.swing.text.html.HTMLDocument.Iterator;
 public class Brain {
 
-	public LinkedList<GenericPair<Category, HashMap<Date,  LinkedList<Product>>>> fullmap;
-	//cheia e data, valoarea e product.
+	public LinkedList<GenericPair<Category, HashMap<String,  LinkedList<Product>>>> fullmap;
 	int totalcash;
 	int totalspend;
 
@@ -14,14 +18,14 @@ public class Brain {
 	{
 		this.totalcash = 0;
 		this.totalspend = 0;
-		this.fullmap = new LinkedList<GenericPair<Category, HashMap<Date,  LinkedList<Product>>>>();
+		this.fullmap = new LinkedList<GenericPair<Category, HashMap<String,  LinkedList<Product>>>>();
 	}
 
 	public Brain(int c)
 	{
 		this.totalcash = c;
 		this.totalspend = 0;
-		this.fullmap = new LinkedList<GenericPair<Category, HashMap<Date,  LinkedList<Product>>>>(); 
+		this.fullmap = new LinkedList<GenericPair<Category, HashMap<String,  LinkedList<Product>>>>(); 
 	}
 
 	public int getCash()
@@ -31,17 +35,55 @@ public class Brain {
 
 	public int getSpend()
 	{
-		return this.totalspend;
+		Food a = new Food("Food");
+		Beverage b = new Beverage("Beverage");
+		Clothing c = new Clothing("Clothing");
+		Entertainment d = new Entertainment("Entertainment");
+		Taxes e = new Taxes("Taxes");
+		return CategorySpendings(a) + CategorySpendings( b) + CategorySpendings(c) + CategorySpendings( d) + CategorySpendings(e);
 	}
 
 	public int getRemaining()
 	{
 		return (this.totalcash - this.totalspend);
 	}
+	
+	public int CategorySpendings(Category c)
+	
+	{	
+		int s=0;
+		for (GenericPair<Category, HashMap<String,  LinkedList<Product>>> itr : fullmap) {
+			if(itr.getFirst().getName().equals(c.getName())) {
+				for (LinkedList<Product> pListItr: itr.getSecond().values()) {
+					for(Product pItr : pListItr) {
+						s += pItr.price;
+					}
+				}
 
+			}
+		}
+		return s;
+	}
+	
+	
 	public void addProduct(Product p)
 	{
-		for(GenericPair<Category, HashMap<Date,  LinkedList<Product>>> itr : fullmap) {
+		boolean categExists = false;
+		for(GenericPair<Category, HashMap<String,  LinkedList<Product>>> itr : fullmap) {
+			if(itr.getFirst().getName().equals(p.getCategory().getName()))
+				categExists = true;		
+		}
+		if(!categExists) {
+			HashMap<String,  LinkedList<Product>> h = new HashMap<String,  LinkedList<Product>>();
+			GenericPair<Category, HashMap<String,  LinkedList<Product>>> newPair = 
+					new GenericPair<Category, HashMap<String,  LinkedList<Product>>>(p.getCategory(), h);
+			fullmap.add(newPair);
+		}
+		
+		
+		String today = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
+
+		for(GenericPair<Category, HashMap<String,  LinkedList<Product>>> itr : fullmap) {
 			if(itr.getFirst().getName().equals(p.getCategory().getName()))  {
 				if(itr.getSecond().containsKey(p.getDate())) {
 					itr.getSecond().get(p.getDate()).add(p);
@@ -56,27 +98,14 @@ public class Brain {
 
 	public void delProduct(Product p)
 	{
-		for(GenericPair<Category, HashMap<Date,  LinkedList<Product>>> itr : fullmap) {
+		for(GenericPair<Category, HashMap<String,  LinkedList<Product>>> itr : fullmap) {
 			if(itr.getFirst().getName().equals(p.getCategory().getName()))  {
 				if(itr.getSecond().containsKey(p.getDate())) {
-					itr.getSecond().get(p.getDate()).remove(p); // stai asa, stergi, ce?
-				}else System.out.println("You did not purchase anything at that date");//eu nu stiu engleza, sigur.
-			}else System.out.println("Esti prost, la tine nu vine Mos Craciun!"); // ......
+					itr.getSecond().get(p.getDate()).remove(p); 
+				}else System.out.println("You did not purchase anything at that date");
+			}else System.out.println("There is no category with that name"); 
 		}
 	}
+	
 }
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-

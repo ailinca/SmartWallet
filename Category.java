@@ -19,7 +19,7 @@ class Food implements Category {
 	}
 	
 	public String toString() {
-		return "Category:" + name;
+		return name;
 	}
 }
 class Beverage implements Category {
@@ -35,7 +35,7 @@ class Beverage implements Category {
 	}
 	
 	public String toString() {
-		return "Category:" + name;
+		return name;
 	}
 }
 class Clothing implements Category {
