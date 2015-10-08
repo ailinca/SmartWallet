@@ -18,15 +18,12 @@ import org.jfree.ui.RefineryUtilities;
 		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-				//stai sa caut cum e default size
 			  
 			  PieChart pc = new PieChart(brain, window, "TestDiag");
 			  pc.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			  pc.setVisible(true);
 			  pc.setSize(500, 500);
-			  RefineryUtilities.centerFrameOnScreen(pc);//blana:)))
-			  
-			 
+			  RefineryUtilities.centerFrameOnScreen(pc);
 		} 
 	}
 
